@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de Administración II | COBAT 22</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;600&family=Quicksand:wght@400;600&family=Zeyada&display=swap');
+
+        :root {
+            --matcha-soft: #e7f3e8;
+            --matcha-dark: #b8d8ba;
+            --matcha-vibrant: #6a8e6d;
+            --pink-cloud: #fce4ec;
+            --cream: #fffdf9;
+            --text-color: #4a5d4b;
+            --border-style: 2.5px solid #d1e2d3;
+        }
+
+        body {
+            background-color: var(--matcha-soft);
+            background-image: 
+                linear-gradient(rgba(184, 216, 186, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(184, 216, 186, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- TIRAS DE IMÁGENES LATERALES (Estilo Filmstrip) --- */
+        .filmstrip-side {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 160px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border: var(--border-style);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .strip-left { left: 20px; transform: translateY(-50%) rotate(-2deg); }
+        .strip-right { right: 20px; transform: translateY(-50%) rotate(2deg); }
+
+        .filmstrip-side img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--matcha-soft);
+        }
+
+        /* --- CONTENEDOR CENTRAL --- */
+        .main-wrapper {
+            width: 750px;
+            margin: 50px 0;
+            z-index: 20;
+        }
+
+        .card {
+            background: var(--cream);
+            border-radius: 45px;
+            padding: 40px;
+            border: var(--border-style);
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .subject-header {
+            background: var(--matcha-vibrant);
+            padding: 40px;
+            border-radius: 45px;
+            text-align: center;
+            border: 5px solid white;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 30px rgba(106, 142, 109, 0.2);
+        }
+
+        .subject-header h1 {
+            font-family: 'Fredoka';
+            color: white;
+            font-size: 38px;
+            margin: 0;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+        }
+
+        .badge {
+            background: var(--pink-accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: 'Fredoka';
+            color: var(--matcha-vibrant);
+            margin-top: 0;
+            border-bottom: 2px dashed var(--matcha-dark);
+            padding-bottom: 10px;
+        }
+
+        /* --- DOCENTE --- */
+        .teacher-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            padding: 25px;
+            border-radius: 35px;
+            border: var(--border-style);
+            margin-top: 20px;
+        }
+
+        .teacher-box img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--pink-cloud);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .teacher-info h3 {
+            margin: 0;
+            font-family: 'Fredoka';
+            font-size: 22px;
+            color: var(--text-color);
+        }
+
+        /* --- PROGRESIONES --- */
+        .progression-item {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 8px solid var(--matcha-dark);
+        }
+
+        .progression-item b {
+            color: var(--matcha-vibrant);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* --- LISTA DE CONTENIDOS --- */
+        .content-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            background: var(--pink-cloud);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #d81b60;
+            text-align: center;
+        }
+
+        .note {
+            background: #fff9c4;
+            padding: 25px;
+            border-radius: 5px;
+            font-family: 'Zeyada';
+            font-size: 24px;
+            transform: rotate(1deg);
+            margin-top: 20px;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <audio id="bgMusic" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="filmstrip-side strip-left">
+        <img src="lateral1.png" alt="pic1">
+        <img src="lateral2.png" alt="pic2">
+        <img src="lateral3.png" alt="pic3">
+    </div>
+
+    <div class="filmstrip-side strip-right">
+        <img src="lateral4.png" alt="pic4">
+        <img src="lateral5.png" alt="pic5">
+        <img src="lateral6.png" alt="pic6">
+    </div>
+
+    <div class="main-wrapper">
+        
+        <div class="subject-header">
+            <span style="color:rgba(255,255,255,0.8); font-weight: 600; letter-spacing: 2px;">MATERIA I</span>
+            <h1>Fundamentos de Administración II</h1>
+        </div>
+
+        <div class="card">
+            <span class="badge">Propósito</span>
+            <p style="font-size: 17px; line-height: 1.8;">
+                Que el estudiantado comprenda los principios de la administración y su aplicación en organizaciones para mejorar la toma de decisiones, el uso eficiente de recursos y el desarrollo de soluciones a problemas sociales y organizacionales.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Progresiones del 1er Parcial</h2>
+            
+            <div class="progression-item">
+                <b>Progresión 1 – Perspectivas administrativas</b>
+                Implementación de las etapas del proceso administrativo en organizaciones (familia, empresa y Estado) para mejorar la gestión de recursos.
+            </div>
+
+            <div class="progression-item">
+                <b>Progresión 2 – Control y racionalidad</b>
+                Análisis de métodos, herramientas y técnicas de control para mejorar el desempeño organizacional y la toma de decisiones.
+            </div>
+
+            <div class="progression-item">
+                <b>Progresión 3 – Responsabilidad social</b>
+                Impacto de las organizaciones en la sociedad y generación de soluciones a problemas del entorno.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Nuestra Docente</h2>
+            <div class="teacher-box">
+                <img src="img1.png" alt="Docente Lucía Sánchez">
+                <div class="teacher-info">
+                    <h3>Lucía Sánchez</h3>
+                    <p style="margin:0; opacity:0.8;">Titular de la Materia | COBAT 22</p>
+                </div>
+            </div>
+            <div class="note">
+                "Administrar no es solo mandar, es saber <br> organizar nuestros sueños." ✨
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Temario del Parcial</h2>
+            <ul class="content-list">
+                <li>Proceso administrativo</li>
+                <li>Perspectivas administrativas</li>
+                <li>Control en la admin</li>
+                <li>Racionalidad económica</li>
+                <li>Toma de decisiones</li>
+                <li>Responsabilidad social</li>
+                <li>Uso eficiente de recursos</li>
+            </ul>
+        </div>
+
+        <footer>
+            Hecho por un alumno para Administración II • COBAT 22 • 2026
+        </footer>
+    </div>
+
+    <script>
+        function playMusic() {
+            var audio = document.getElementById("bgMusic");
+            if (audio.paused) {
+                audio.play();
+            }
+        }
+    </script>
+</body>
+</html>
